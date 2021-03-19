@@ -108,7 +108,8 @@ class Minesweeper:
                 if ((x+i, y+j) in visited or
                     x+i not in range(self.height) or
                     y+j not in range(self.width) or
-                        self.hidden_board[x+i][y+j] == 'X'):
+                    self.hidden_board[x+i][y+j] == 'X' or
+                        self._board[x+i][y+j] == 'F'):
                     continue
                 if self.hidden_board[x+i][y+j] == 0:
                     stack.append((x+i, y+j))

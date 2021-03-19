@@ -1,5 +1,6 @@
 import config as c
 from windows import Scores, Difficulties
+from util import resource_path
 import minesweeper
 import pygame as pg
 import sys
@@ -14,15 +15,17 @@ class Game:
         self.height, self.width = c.BOARD_SIZE[self.level]
         self.window = pg.display.set_mode((self.width, self.height))
         pg.display.set_caption(c.TITLE)
+        icon = pg.image.load(resource_path('icon.png'))
+        pg.display.set_icon(icon)
         pg.font.init()
         self.fonts = {
-            'grid_font': pg.font.Font('FreeSansBold.ttf', 20),
+            'grid_font': pg.font.Font(resource_path('FreeSansBold.ttf'), 20),
             'panel_font': pg.font.SysFont("lucidaconsole", 30),
             'menu_font':  pg.font.SysFont("dejavuserif", 10),
             'large_menu_font': pg.font.SysFont("dejavuserif", 20)
         }
         self.ms = minesweeper.Minesweeper(level=self.level)
-        self.flag = pg.image.load('flag.bmp')
+        self.flag = pg.image.load(resource_path('flag.bmp'))
         self.tp_btn_pos = int((self.width-c.TILESIZE)/2)
         self.tp_bt_col = c.YELLOW
         self.timer_pos = int((self.width-5*c.TILESIZE)/4)
@@ -282,12 +285,20 @@ class Game:
         self.window.blit(text2, c.MENU_OPTION_TEXT_POS(text2, row=1))
 
 
-if getattr(sys, 'frozen', False):
-    os.chdir(os.path.dirname(sys.executable))
+if __name__ == "__main__":
+    if getattr(sys, 'frozen', False):
+        os.chdir(os.path.dirname(sys.executable))
 
-with open('settings.p', 'rb') as f:
-    settings = pickle.load(f)
+    if not os.path.exists('settings.p'):
+        with open('settings.p', 'wb') as f:
+            pickle.dump({"level": 'beginner'}, f)
 
-g = Game(settings["level"])
-g._reset_scores()
-g.run()
+    if not os.path.exists('scores.p'):
+        with open('scores.p', 'wb') as f:
+            pickle.dump({"beginner": "", "intermediate": "", "expert": ""}, f)
+
+    with open('settings.p', 'rb') as f:
+        settings = pickle.load(f)
+
+    g = Game(settings["level"])
+    g.run()
