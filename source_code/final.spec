@@ -9,7 +9,7 @@ added_files = [
          ]
 
 a = Analysis(['main.py'],
-             pathex=['D:\\Python_projects\\Minesweeper\\source_code'],
+             pathex=['/path/to/source_code'],
              binaries=[],
              datas=added_files,
              hiddenimports=[],
@@ -28,7 +28,7 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,
           [],
-          name='main',
+          name='minesweeper',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
